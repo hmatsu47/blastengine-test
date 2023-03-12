@@ -11,9 +11,9 @@ blastengine テスト用リポジトリ
     - id : Partition key
     - fromAddress : Sender address
     - fromName : Sender name
-    - to : Receiver address
+    - toAddress : Receiver address
+    - toName : Receiver name
     - subject : Subject (Title)
     - textPart : Content body (Text only)
 - [blastBounceReceiver](lambda/blastBounceReceiver/README.md)
   - Bounce を Webhook から受信して DynamoDB table (for bounce) に書き込み
-  - 準備中

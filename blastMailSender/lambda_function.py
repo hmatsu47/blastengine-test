@@ -58,7 +58,8 @@ class Message():
         self.from_name    = item['fromName']
         self.subject      = item['subject']
         self.text_part    = item['textPart']
-        self.to           = item['to']
+        self.to_address   = item['toAddress']
+        self.to_name      = item['toName']
 
 def deserialize(image):
     # dictに変換
@@ -73,7 +74,7 @@ def send(message):
     transaction.subject(message.subject)
     transaction.text_part(message.text_part)
     transaction.fromAddress(message.from_address, message.from_name)
-    transaction.to(message.to)
+    transaction.to(message.to_address)
 
     return str(transaction.send())
 
@@ -85,7 +86,8 @@ def store(table, message, delivery_id):
             'fromAddress': message.from_address,
             'fromName'   : message.from_name,
             'subject'    : message.subject,
-            'to'         : message.to
+            'toAddress'  : message.to_address,
+            'toName'     : message.to_name
         }
     )
     if (response['ResponseMetadata']['HTTPStatusCode'] != 200):

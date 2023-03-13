@@ -40,16 +40,17 @@ class BounceItem():
     # バウンス項目クラス
     def __init__(self, table, item):
         # コンストラクタ
+
+        # Webhookの情報を取得
         self.type          = item['type']
         self.datetime      = item['datetime']
-
         detail = item['detail']
-
         self.to_address    = detail['mailaddress']
         self.subject       = detail['subject']
         self.error_code    = str(detail['error_code'])
         self.error_message = detail['error_message']
         self.delivery_id   = detail['delivery_id']
+        # 送信履歴の情報を取得
         response = table.get_item(Key={'deliveryId': self.delivery_id})
         sentItem = response['Item']
         self.from_address  = sentItem['fromAddress']

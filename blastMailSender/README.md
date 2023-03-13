@@ -26,7 +26,7 @@
       - `dynamodb:GetShardIterator`, `dynamodb:DescribeStream`, `dynamodb:GetRecords`
         - Resource : `arn:aws:dynamodb:[Region]:[Account ID]:table/[for mail sent log]/stream/*`
   - Layer
-    - [blastengine Python SDK](https://pypi.org/project/blastengine/)
+    - [blastengine Python SDK](https://github.com/blastengineMania/blastengine-py)
   - Configuration
     - General
       - Timedout : 30 sec.

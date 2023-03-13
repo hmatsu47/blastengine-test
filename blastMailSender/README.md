@@ -3,9 +3,15 @@
 ### blastengine
 
 - API Key
+- DKIM
 
 ### AWS
 
+- Route 53 Public Hosted Zone
+  - SPF record
+  - DKIM record
+    - https://powerdmarc.com/ja/power-dmarc-toolbox/
+      - Generator Tools -> DKIM Record Generator
 - DynamoDB tables
   - for mail sender
     - Partition key : id (String)

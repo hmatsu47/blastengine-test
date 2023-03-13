@@ -3,12 +3,12 @@
 ### blastengine
 
 - API Key
-- DKIM
 
 ### AWS
 
 - Route 53 Public Hosted Zone
   - SPF record
+    - https://qiita.com/goofmint/items/ccfb316d4fc2e5c4d412#%E9%80%81%E4%BF%A1%E5%85%83%E3%83%89%E3%83%A1%E3%82%A4%E3%83%B3%E3%81%AEspf%E3%82%92%E8%A8%AD%E5%AE%9A%E3%81%99%E3%82%8B
   - DKIM record
     - https://powerdmarc.com/ja/power-dmarc-toolbox/
       - Generator Tools -> DKIM Record Generator
@@ -50,3 +50,7 @@
     - DynamoDB Streams
       - Trigger : lambda function
         - Batch size : 100
+
+### blastengine
+
+- DKIM

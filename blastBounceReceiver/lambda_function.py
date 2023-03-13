@@ -54,7 +54,6 @@ class BounceItem():
         sentItem = response['Item']
         self.from_address  = sentItem['fromAddress']
         self.from_name     = sentItem['fromName']
-        self.subject       = sentItem['subject']
         self.to_name       = sentItem['toName']
 
 def store(table, item):

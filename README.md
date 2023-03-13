@@ -4,7 +4,7 @@ blastengine テスト用リポジトリ
 
 ## AWS Lambda 関数
 
-※あらかじめ [blastengine Python SDK](https://pypi.org/project/blastengine/) を Lambda Layer 化しておき、Lambda 関数で使用する
+※あらかじめ [blastengine Python SDK](https://github.com/blastengineMania/blastengine-py) を Lambda Layer 化しておき、Lambda 関数で使用する
 
 - [blastMailSender](lambda/blastMailSender/README.md)
   - DynamoDB table (for mail sender) にメールの情報を登録するとメールを送信

@@ -10,7 +10,7 @@
   - for mail sender
     - Partition key : id (String)
   - for mail sent log
-    - Partition key : deliveryId (String)
+    - Partition key : deliveryId (Number)
 - KMS customer key
   - for Lambda (Environment variables)
     - Create

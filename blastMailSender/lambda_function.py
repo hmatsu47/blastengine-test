@@ -76,7 +76,7 @@ def send(message):
     transaction.fromAddress(message.from_address, message.from_name)
     transaction.to(message.to_address)
 
-    return str(transaction.send())
+    return transaction.send()
 
 def store(table, message, delivery_id):
     # 送信ログ用テーブルに転記

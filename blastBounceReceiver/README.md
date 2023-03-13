@@ -7,7 +7,7 @@
     - Create
 - DynamoDB tables
   - for bounce
-    - Partition key : deliveryId (String)
+    - Partition key : deliveryId (Number)
 - Lambda Function
   - IAM Role
     - Create new Role

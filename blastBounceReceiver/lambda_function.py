@@ -49,7 +49,7 @@ class BounceItem():
         self.subject       = detail['subject']
         self.error_code    = str(detail['error_code'])
         self.error_message = detail['error_message']
-        self.delivery_id   = str(detail['delivery_id'])
+        self.delivery_id   = detail['delivery_id']
         response = table.get_item(Key={'deliveryId': self.delivery_id})
         sentItem = response['Item']
         self.from_address  = sentItem['fromAddress']

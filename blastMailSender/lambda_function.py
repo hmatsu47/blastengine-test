@@ -2,6 +2,7 @@ import boto3
 import datetime
 import json
 import os
+import random
 import time
 import traceback
 from base64 import b64decode
@@ -23,6 +24,10 @@ be_api_key = boto3.client('kms').decrypt(
 
 table_sent_log = os.environ['TABLE_SENT_LOG']
 
+MAX_REQUEST_COUNT = 3
+TIME_SLEEP  = 60
+TIME_JITTER = 5
+
 def lambda_handler(event, context):
     # blastengine初期化
     Blastengine(be_api_user, be_api_key)
@@ -34,19 +39,35 @@ def lambda_handler(event, context):
         eventName = record['eventName']
         if (eventName == 'INSERT' or eventName == 'MODIFY'):
             image = record['dynamodb']['NewImage']
-            try:
-                # eventをdictに変換して値を抽出
-                item = deserialize(image)
-                message = Message(item)
-                # blastengineで送信
-                delivery_id = send(message)
-                # 表示用テーブルに転記
-                tb_response = store(table, message, delivery_id)
-                print('Result table:', tb_response)
-            except Exception as e:
-                # 例外→ログを残す
-                print(traceback.format_exc())
-                print(image)
+            request_count = 0
+            mail_sent     = 0
+            delivery_id   = 0
+            while request_count < MAX_REQUEST_COUNT:
+                try:
+                    # eventをdictに変換して値を抽出
+                    item = deserialize(image)
+                    message = Message(item)
+                    # blastengineで送信
+                    if (mail_sent == 0):
+                        delivery_id = send(message)
+                        mail_sent = 1
+                    # 履歴用テーブルに転記
+                    tb_response = store(table, message, delivery_id)
+                    print('Result table:', tb_response)
+                    # 送信 OK
+                    request_count = MAX_REQUEST_COUNT
+                except Exception as e:
+                    # 例外→ログを残す
+                    print(traceback.format_exc())
+                    request_count += 1
+                    if (request_count >= MAX_REQUEST_COUNT):
+                        # 連続失敗上限到達→スキップ
+                        print(image)
+                        print('Retry count exceeded. -> skip')
+                    else:
+                        # 60～64秒スリープしてリトライ
+                        time.sleep(TIME_SLEEP + random.randrange(TIME_JITTER))
+                        print('Retry:', request_count)
     return 'Successfully processed {} records.'.format(len(event['Records']))
 
 class Message():

@@ -8,7 +8,7 @@ table_sent_log = os.environ['TABLE_SENT_LOG']
 table_bounce   = os.environ['TABLE_BOUNCE']
 
 def lambda_handler(event, context):
-    # バウンス用テーブルの準備
+    # 履歴用テーブル・バウンス用テーブルの準備
     dynamodb = boto3.resource('dynamodb')
     tableSentLog = dynamodb.Table(table_sent_log)
     tableBounce  = dynamodb.Table(table_bounce)

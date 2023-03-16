@@ -31,7 +31,7 @@ TIME_JITTER = 5
 def lambda_handler(event, context):
     # blastengine初期化
     Blastengine(be_api_user, be_api_key)
-    # 送信ログ用テーブルの準備
+    # 送信履歴用テーブルの準備
     dynamodb = boto3.resource('dynamodb')
     table = dynamodb.Table(table_sent_log)
     # ストリームから受け取った変更後レコードリストをループ処理

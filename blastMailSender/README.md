@@ -27,6 +27,8 @@
     - Add Policy
       - `dynamodb:ListStreams`
         - Resource : `*`
+      - `dynamodb:DeleteItem`
+        - Resource : `arn:aws:dynamodb:[Region]:[Account ID]:table/[for mail sender]`
       - `dynamodb:PutItem`, `dynamodb:GetItem`, `dynamodb:Query`
         - Resource : `arn:aws:dynamodb:[Region]:[Account ID]:table/[for mail sent log]`
       - `dynamodb:GetShardIterator`, `dynamodb:DescribeStream`, `dynamodb:GetRecords`
@@ -39,6 +41,7 @@
     - Environment variables
       - `BLASTENGINE_API_USER` : blastengine User Name
       - `BLASTENGINE_API_KEY` : blastengine API Key
+      - `TABLE_SENDER` : Table name (for sender)
       - `TABLE_SENT_LOG` : Table name (for sent log)
 - KMS customer key
   - for DynamoDB tables

@@ -22,6 +22,7 @@ be_api_key = boto3.client('kms').decrypt(
     EncryptionContext={'LambdaFunctionName': os.environ['AWS_LAMBDA_FUNCTION_NAME']}
 )['Plaintext'].decode('utf-8')
 
+table_sender   = os.environ['TABLE_SENDER']
 table_sent_log = os.environ['TABLE_SENT_LOG']
 
 MAX_REQUEST_COUNT = 3
@@ -31,12 +32,14 @@ TIME_JITTER = 5
 def lambda_handler(event, context):
     # blastengine初期化
     Blastengine(be_api_user, be_api_key)
-    # 送信履歴用テーブルの準備
+    # テーブルの準備
     dynamodb = boto3.resource('dynamodb')
-    table = dynamodb.Table(table_sent_log)
+    tableLog = dynamodb.Table(table_sent_log)
+    tableSender = dynamodb.Table(table_sender)
     # ストリームから受け取った変更後レコードリストをループ処理
     for record in event['Records']:
         eventName = record['eventName']
+        # DynamoDB StreamsのフィルタでもeventNameをフィルタしているが設定ミスでの課金を防ぐためeventNameを確認
         if (eventName == 'INSERT' or eventName == 'MODIFY'):
             image = record['dynamodb']['NewImage']
             request_count = 0
@@ -52,8 +55,10 @@ def lambda_handler(event, context):
                         delivery_id = send(message)
                         mail_sent = 1
                     # 履歴用テーブルに転記
-                    tb_response = store(table, message, delivery_id)
+                    tb_response = store(tableLog, message, delivery_id)
                     print('Result table:', tb_response)
+                    # 送信用テーブルからレコード削除
+                    tableSender.delete_item(Key={'id': message.id})
                     # 送信 OK
                     request_count = MAX_REQUEST_COUNT
                 except Exception as e:
